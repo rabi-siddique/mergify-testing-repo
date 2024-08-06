@@ -27,7 +27,7 @@ jobs:
         with:
           result-encoding: string
           script: |-
-            echo inputs.ignore-endo-branch
-            if (${inputs.ignore-endo-branch}) {
+            echo ${{ inputs.ignore-endo-branch }}
+            if (${{ inputs.ignore-endo-branch }}) {
               echo RANNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
             }
