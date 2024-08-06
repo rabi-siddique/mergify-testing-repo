@@ -20,7 +20,7 @@ jobs:
       - name: Printing
         run: |
           echo "IGNORE_DIRTY_YARN_LOCK is set to $IGNORE_DIRTY_YARN_LOCK"
-          echo "Input ignore_endo_branch is ${INPUT_IGNORE_ENDO_BRANCH}"
+          echo "Input ignore_endo_branch is ${{ inputs.ignore_endo_branch }}"
 
 
       # - name: Get the appropriate Endo branch
