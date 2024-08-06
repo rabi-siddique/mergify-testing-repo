@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      ignore-endo-branch:
+        description: 'Ignore specific Endo branch?'
+        required: false
+        default: 'false'
 
 jobs:
   build:
@@ -15,3 +20,14 @@ jobs:
       - name: Printing
         run: |
           echo "Hello From Rabi Siddique"
+
+      - name: Get the appropriate Endo branch
+        id: endo-branch
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |-
+            echo inputs.ignore-endo-branch
+            if (${inputs.ignore-endo-branch}) {
+              echo RANNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+            }
