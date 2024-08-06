@@ -26,13 +26,12 @@ jobs:
           fi
 
 
-      # - name: Get the appropriate Endo branch
-      #   id: endo-branch
-      #   uses: actions/github-script@v7
-      #   with:
-      #     result-encoding: string
-      #     script: |-
-      #       echo ${{ inputs.ignore-endo-branch }}
-      #       if (${{ inputs.ignore-endo-branch }}) {
-      #         echo RANNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-      #       }
+      - name: Get the appropriate Endo branch
+        id: endo-branch
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            if (${{ env.IGNORE_DIRTY_YARN_LOCK }}) {
+              console.log('RANNNNNNNNNNNNNNNNNNNNNNNNNNNNNN');
+            }
