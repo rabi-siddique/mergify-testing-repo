@@ -1,25 +1,27 @@
-name: Deploy dapp-inter to IPFS
+name: Example Workflow
 
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
     inputs:
-      ignore-endo-branch:
-        description: 'Ignore specific Endo branch?'
-        required: false
+      ignore_endo_branch:
+        description: 'Ignore Endo Branch'
+        required: true
         default: 'false'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      IGNORE_DIRTY_YARN_LOCK: ${{ inputs.ignore_endo_branch == 'false' && 'true' || 'false' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Printing
         run: |
-          echo ${{ inputs.ignore-endo-branch }}
+          echo "IGNORE_DIRTY_YARN_LOCK is set to $IGNORE_DIRTY_YARN_LOCK"
+          echo "Input ignore_endo_branch is ${INPUT_IGNORE_ENDO_BRANCH}"
+
 
       # - name: Get the appropriate Endo branch
       #   id: endo-branch
