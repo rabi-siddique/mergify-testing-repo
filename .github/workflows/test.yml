@@ -21,6 +21,9 @@ jobs:
         run: |
           echo "IGNORE_DIRTY_YARN_LOCK is set to $IGNORE_DIRTY_YARN_LOCK"
           echo "Input ignore_endo_branch is ${{ inputs.ignore_endo_branch }}"
+          if [ "$IGNORE_DIRTY_YARN_LOCK" = true ]; then
+            echo "If Condition RAN" 
+          fi
 
 
       # - name: Get the appropriate Endo branch
