@@ -1,0 +1,42 @@
+name: Pre-merge checks
+
+# Test copy of the no-fixup-commits job from agoric-sdk's mergify-ready.yml.
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - labeled
+      - unlabeled
+
+jobs:
+  no-fixup-commits:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.base.ref == 'main' &&
+      contains(github.event.pull_request.labels.*.name, 'automerge:rebase') &&
+      !contains(github.event.pull_request.labels.*.name, 'bypass:linear-history')
+
+    env:
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      # autosquash.yml folds these
+      - name: Check for fixup commits
+        id: fixup-commits
+        run: |
+          if [[ $(git rev-list "$BASE_SHA".."$HEAD_SHA" --grep="^\(fixup\|amend\|squash\)! " | wc -l) -eq 0 ]]; then
+            echo "No fixup/amend/squash commits found in commit history"
+          else
+            echo "fixup/amend/squash commits found in commit history"
+            exit 1
+          fi
