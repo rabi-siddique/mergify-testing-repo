@@ -43,14 +43,14 @@ jobs:
             echo "fold=true" >>"$GITHUB_OUTPUT"
           fi
 
-      # A PAT, since pushes made with GITHUB_TOKEN don't re-trigger the checks.
-      - name: Check token
+      # A write deploy key, since pushes made with GITHUB_TOKEN don't re-trigger the checks.
+      - name: Check deploy key
         if: steps.check.outputs.fold == 'true'
         env:
-          AUTOSQUASH_TOKEN: ${{ secrets.AUTOSQUASH_TOKEN }}
+          AUTOSQUASH_SSH_KEY: ${{ secrets.AUTOSQUASH_SSH_KEY }}
         run: |
-          if [ -z "$AUTOSQUASH_TOKEN" ]; then
-            echo "::error::AUTOSQUASH_TOKEN secret is not configured"
+          if [ -z "$AUTOSQUASH_SSH_KEY" ]; then
+            echo "::error::AUTOSQUASH_SSH_KEY secret is not configured"
             exit 1
           fi
 
@@ -60,7 +60,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-          token: ${{ secrets.AUTOSQUASH_TOKEN }}
+          ssh-key: ${{ secrets.AUTOSQUASH_SSH_KEY }}
 
       - name: Fold fixup commits
         if: steps.check.outputs.fold == 'true'
